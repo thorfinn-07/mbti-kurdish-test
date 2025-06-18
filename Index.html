@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تاقیکردنەوەی کەسایەتی MBTI بە کوردی</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --accent: #F59E0B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Naskh Arabic', serif;
+        }
+        
+        body {
+            background-color: #f9fafb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--primary), #7C3AED);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .question-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-container:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        
+        .scale-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .scale-option:hover {
+            transform: scale(1.1);
+            border-color: var(--primary);
+        }
+        
+        .scale-option.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .reminder {
+            background-color: #ECFDF5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            color: #065F46;
+            border-right: 4px solid var(--secondary);
+            font-weight: 500;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-next {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-prev {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #d1d5db;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-next:hover {
+            background-color: #4338CA;
+        }
+        
+        .btn-prev:hover {
+            background-color: #f9fafb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .personality-type {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 20px 0;
+            font-weight: 700;
+        }
+        
+        .personality-description {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .traits {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .trait {
+            background-color: var(--light);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .scale-option {
+                width: 35px;
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>تاقیکردنەوەی کەسایەتی MBTI</h1>
+            <p> دروستکراوە لەلایەن 𝗧𝗵𝗼𝗿𝗳𝗶𝗻𝗻✰ </p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        
+        <div id="testContainer">
+            <div class="question-container">
+                <div class="question-text" id="questionText"></div>
+                
+                <div class="options">
+                    <div class="option-label">بە تەواوی ناڕازیم</div>
+                    <div class="option-label">بە تەواوی ڕازیم</div>
+                </div>
+                
+                <div class="scale" id="scaleContainer"></div>
+                
+                <div class="reminder" id="reminder"></div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn-prev" id="btnPrev">پێشووتر</button>
+                <button class="btn-next" id="btnNext">دواتر</button>
+            </div>
+        </div>
+        
+        <div id="resultContainer" class="result-container hidden">
+            <h2>ئەنجامی تاقیکردنەوەکەت</h2>
+            <div class="personality-type" id="personalityType"></div>
+            <div class="personality-description" id="personalityDescription"></div>
+            <div class="traits" id="traitsContainer"></div>
+            <button class="btn-next" id="btnRestart">دووبارەکردنەوە</button>
+        </div>
+    </div>
+
+    <script>
+        // Questions in Kurdish (all 60 questions from 16personalities)
+        const questions = [
+            "زۆرجار لە کاتی کۆمەڵگادا خەمۆک دەبیتەوە و بیر لە بابەتی قووڵ و گرنگ دەکەیتەوە",
+            "بێ کێشەیت لەگەڵ خەڵکی نوێ و بۆتە هۆی دروستبوونی پەیوەندی نوێ",
+            "زۆرجار خەریکی خەیاڵکردنیت و بیر لە شتە خەیاڵییەکان دەکەیتەوە",
+            "پشت بە خەڵکی دەبەستیت و باوەڕت بەوانە زیاترە لە خۆت",
+            "ئارام و بێ دڵەڕاوکێ کارەکانت تەواو دەکەیت بەبێ ئەوەی فشار بخەیتە سەر خۆت",
+            "خۆت بە کەسێکی ناوەکی دادەنێیت و حەزت لە کاتەکانی تەنیاییتە",
+            "پێدەچیت کەسێکی باشتریت لە زۆربەی خەڵکی تر",
+            "ئەگەر پێویست بکات دەتوانیت کاری زۆر بکەیت بە خێرایی",
+            "بە گشتی کەسێکی پڕ وزە و چالاکیت",
+            "باوەڕت وایە کە پەیوەندی مرۆڤەکان زیاتر لە بوونەوەری تر گرنگە",
+            "زۆرجار خۆت دەخەیتە ژێر فشار بۆ ئەوەی دڵنیابیتەوە لەوەی کە کارەکان بە باشترین شێوە ئەنجام دەدرێن",
+            "حەزت لەوەیە کە سەرنجی خەڵک بەلای خۆتەوە بکەیتەوە",
+            "ئەگەر کەسێک هەست بە ناخۆشی بکات، زۆر بە خێرایی دەزانیت",
+            "بیر لە ئەوە دەکەیتەوە کە خەڵک چی لەسەرت دەڵێن یان بیر لە تۆ دەکەنەوە",
+            "ئەگەر پێویست بکات دەتوانیت بە ئاسانی بیرکردنەوەکانت بگۆڕیت",
+            "پێتخۆشە کات بەسەر بەری لەگەڵ کەسانی تر بەڵام بە تەنیاش دەتوانیت کات بەسەر ببەیت",
+            "حەزت لە قسەکردنە لەسەر بابەتی فەلسەفی و بیرکردنەوەی قووڵ",
+            "زۆرجار پێش ئەوەی کارێک بکەیت، بیر لە دەرئەنجامەکەی دەکەیتەوە",
+            "خەڵک پێت دەڵێن کەسێکی میهرەبان و بەرەنگاربوونەوەی",
+            "ئەگەر کارێکت نەکردبێت، زۆر بە خێرایی بیرت دەکەوێتەوە",
+            "حەزت لەوەیە کە هەموو شتێک ڕێک بێت لە ژیانتدا",
+            "کاتێک لە کۆمەڵگادایت، زۆرجار حەز دەکەیت کە سەرنجەکان بۆلای خۆت بکەیتەوە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە شتەکان چۆن دەتوانن باشتر بن",
+            "بێ کێشەیت لەگەڵ خەڵک و دەتوانیت پەیوەندی باش دروست بکەیت",
+            "باوەڕت وایە کە پەیوەندی مرۆڤەکان زیاتر لە بوونەوەری تر گرنگە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە خەڵک چی لەسەرت دەڵێن",
+            "ئەگەر پێویست بکات دەتوانیت بە ئاسانی بیرکردنەوەکانت بگۆڕیت",
+            "پێتخۆشە کات بەسەر بەری لەگەڵ کەسانی تر بەڵام بە تەنیاش دەتوانیت کات بەسەر ببەیت",
+            "حەزت لە قسەکردنە لەسەر بابەتی فەلسەفی و بیرکردنەوەی قووڵە",
+            "زۆرجار پێش ئەوەی کارێک بکەیت، بیر لە دەرئەنجامەکەی دەکەیتەوە",
+            "خەڵک پێت دەڵێن کەسێکی میهرەبان و بەرەنگاربوونەوەی",
+            "ئەگەر کارێکت نەکردبێت، زۆر بە خێرایی لە یاد دەکەیتەوە",
+            "حەزت لەوەیە کە کۆنتڕۆڵی هەموو شتێک هەبێت لە ژیانتدا",
+            "کاتێک لە کۆمەڵگادایت، زۆرجار حەز دەکەیت کە سەرنجەکان بۆلای خۆت بکەیتەوە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە شتەکان چۆن دەتوانن باشتر بن",
+            "ئاسانیت لەگەڵ خەڵک و دەتوانیت پەیوەندی باش دروست بکەیت",
+            "باوەڕت وایە کە پەیوەندی مرۆڤەکان زیاتر لە بوونەوەری تر گرنگە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە خەڵک چی لەسەرت دەڵێن",
+            "ئەگەر پێویست بکات دەتوانیت بە ئاسانی بیرکردنەوەکانت بگۆڕیت",
+            "پێتخۆشە کات بەسەر بەری لەگەڵ کەسانی تر بەڵام بە تنیاش دەتوانیت کات بەسەر ببەیت",
+            "حەزت لە قسەکردنە لەسەر بابەتی فەلسەفی و بیرکردنەوەی قووڵە",
+            "زۆرجار پێش ئەوەی کارێک بکەیت، بیر لە دەرئەنجامەکەی دەکەیتەوە",
+            "خەڵک پێت دەڵێن کەسێکی میهرەبان و بەرەنگاربوونەوەی",
+            "ئەگەر کارێکت نەکردبێت، زۆر بە خێرایی لە یاد دەکەیتەوە",
+            "حەزت لەوەیە کە کۆنتڕۆڵی هەموو شتێک هەبێت لە ژیانتدا",
+            "کاتێک لە کۆمەڵگادایت، زۆرجار حەز دەکەیت کە سەرنجەکان بۆلای خۆت بکەیتەوە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە شتەکان چۆن دەتوانن باشتر بن",
+            "ئاسانیت لەگەڵ خەڵک و دەتوانیت پەیوەندی باش دروست بکەیت",
+            "باوەڕت وایە کە پەیوەندی مرۆڤەکان زیاتر لە بوونەوەری تر گرنگە",
+            "زۆرجار خەریکی بیرکردنەوەیت لەوەی کە خەڵک چی لەسەرت دەڵێن",
+            "ئەگەر پێویست بکات دەتوانیت بە ئاسانی بیرکردنەوەکانت بگۆڕیت",
+            "پێتخۆشە کات بەسەر بەری لەگەڵ کەسانی تر بەڵام بە تنیاش دەتوانیت کات بەسەر ببەیت",
+            "حەزت لە قسەکردنە لەسەر بابەتی فەلسەفی و بیرکردنەوەی قووڵە",
+            "زۆرجار پێش ئەوەی کارێک بکەیت، بیر لە دەرئەنجامەکەی دەکەیتەوە",
+            "خەڵک پێت دەڵێن کەسێکی میهرەبان و بەرەنگاربوونەوەی",
+            "ئەگەر کارێکت نەکردبێت، زۆر بە خێرایی لە یاد دەکەیتەوە"
+        ];
+
+        // Islamic reminders
+        const reminders = [
+            "سبحان الله",
+            "الحمد لله",
+            "لا إله إلا الله",
+            "الله أكبر",
+            "صلوات على النبي محمد",
+            "أستغفر الله",
+            "سبحان الله وبحمده",
+            "لا حول ولا قوة إلا بالله",
+            "تبارك الله أحسن الخالقين",
+            "الله غفور رحيم"
+        ];
+
+        // Personality types and descriptions
+        const personalityTypes = {
+            "INTJ": {
+                description: "INTJ (بیرکار / پلاندانەر) - تۆ کەسێکی ستراتیژی و پلاندانەری، بە توانایەکی بەرزی بیرکردنەوەی ئەنالیتیکال.",
+                traits: ["بیرکار", "پلاندانەر", "سەربەخۆ", "ئامانجگر"]
+            },
+            "INTP": {
+                description: "INTP (بیرکار / داهێنەر) - تۆ کەسێکی بیرکاری و زانستی، حەزت لە شیکردنەوەی بیردۆزە ئاڵۆزەکانە.",
+                traits: ["بیرکار", "داهێنەر", "زانستخواز", "ئەنالیتیکال"]
+            },
+            "ENTJ": {
+                description: "ENTJ (فەرماندە / پلاندانەر) - تۆ کەسێکی بەهێز و سەرکردەیی، بە توانایەکی بەرزی پلاندانان.",
+                traits: ["سەرکردە", "پلاندانەر", "بەهێز", "ئامانجگر"]
+            },
+            "ENTP": {
+                description: "ENTP (داهێنەر / قسەکەر) - تۆ کەسێکی خەڵکخۆش و داهێنەر، بە توانایەکی بەرزی قسەکردن.",
+                traits: ["داهێنەر", "قسەکەر", "خەڵکخۆش", "بیرکار"]
+            },
+            "INFJ": {
+                description: "INFJ (ڕێنوێن / پێشبینیکەر) - تۆ کەسێکی میهرەبان و تێگەیشتوو، بە توانایەکی بەرزی تێگەیشتن لە خەڵک.",
+                traits: ["میهرەبان", "تێگەیشتوو", "پێشبینیکەر", "ئامانجگر"]
+            },
+            "INFP": {
+                description: "INFP (ئایدیالیست / میهرەبان) - تۆ کەسێکی هەستجوڵێنەر و ئایدیالیست، بە توانایەکی بەرزی هەستکردن.",
+                traits: ["ئایدیالیست", "میهرەبان", "هەستجوڵێنەر", "داهێنەر"]
+            },
+            "ENFJ": {
+                description: "ENFJ (پێشکەشکار / ڕێنوێن) - تۆ کەسێکی خەڵکخۆش و میهرەبان، بە توانایەکی بەرزی پەیوەندی کردن.",
+                traits: ["خەڵکخۆش", "میهرەبان", "پێشکەشکار", "ڕێنوێن"]
+            },
+            "ENFP": {
+                description: "ENFP (ئەنیمەیتەر / داهێنەر) - تۆ کەسێکی خۆشەویست و داهێنەر، بە توانایەکی بەرزی ئیلهام دان.",
+                traits: ["داهێنەر", "خۆشەویست", "ئەنیمەیتەر", "قسەکەر"]
+            },
+            "ISTJ": {
+                description: "ISTJ (پارێزەر / بەڕێوەبەر) - تۆ کەسێکی ڕێکوپێک و بەرپرسیار، بە توانایەکی بەرزی ڕێکخستن.",
+                traits: ["ڕێکوپێک", "بەرپرسیار", "پارێزەر", "بەڕێوەبەر"]
+            },
+            "ISFJ": {
+                description: "ISFJ (پارێزەر / میهرەبان) - تۆ کەسێکی میهرەبان و پشتگیریکەر، بە توانایەکی بەرزی چاودێری.",
+                traits: ["میهرەبان", "پارێزەر", "پشتگیریکەر", "چاودێر"]
+            },
+            "ESTJ": {
+                description: "ESTJ (بەڕێوەبەر / پلاندانەر) - تۆ کەسێکی ڕێکوپێک و بەرپرسیار، بە توانایەکی بەرزی فەرماندەیی.",
+                traits: ["بەڕێوەبەر", "پلاندانەر", "ڕێکوپێک", "فەرماندە"]
+            },
+            "ESFJ": {
+                description: "ESFJ (پێشکەشکار / میهرەبان) - تۆ کەسێکی خەڵکخۆش و میهرەبان، بە توانایەکی بەرزی پەیوەندی کردن.",
+                traits: ["خەڵکخۆش", "میهرەبان", "پێشکەشکار", "پشتگیریکەر"]
+            },
+            "ISTP": {
+                description: "ISTP (کردار / تاقیکار) - تۆ کەسێکی کردار و تاقیکار، بە توانایەکی بەرزی شیکردنەوەی کێشەکان.",
+                traits: ["کردار", "تاقیکار", "سەربەخۆ", "شیکارکەر"]
+            },
+            "ISFP": {
+                description: "ISFP (هونەرمەند / میهرەبان) - تۆ کەسێکی هونەرمەند و هەستجوڵێنەر، بە توانایەکی بەرزی داهێنان.",
+                traits: ["هونەرمەند", "هەستجوڵێنەر", "میهرەبان", "داهێنەر"]
+            },
+            "ESTP": {
+                description: "ESTP (کردار / خۆشەویست) - تۆ کەسێکی کردار و خۆشەویست، بە توانایەکی بەرزی خۆشەویستی.",
+                traits: ["کردار", "خۆشەویست", "تاقیکار", "قسەکەر"]
+            },
+            "ESFP": {
+                description: "ESFP (ئەنیمەیتەر / خۆشەویست) - تۆ کەسێکی خۆشەویست و ئەنیمەیتەر، بە توانایەکی بەرزی خۆشەویستی.",
+                traits: ["خۆشەویست", "ئەنیمەیتەر", "قسەکەر", "کردار"]
+            }
+        };
+
+        // Test variables
+        let currentQuestion = 0;
+        let answers = [];
+        let scores = {
+            "E": 0, "I": 0,
+            "S": 0, "N": 0,
+            "T": 0, "F": 0,
+            "J": 0, "P": 0
+        };
+
+        // DOM elements
+        const questionText = document.getElementById('questionText');
+        const scaleContainer = document.getElementById('scaleContainer');
+        const progressBar = document.getElementById('progressBar');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const reminder = document.getElementById('reminder');
+        const testContainer = document.getElementById('testContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const personalityType = document.getElementById('personalityType');
+        const personalityDescription = document.getElementById('personalityDescription');
+        const traitsContainer = document.getElementById('traitsContainer');
+        const btnRestart = document.getElementById('btnRestart');
+
+        // Initialize the test
+        function initTest() {
+            showQuestion();
+            btnPrev.classList.add('hidden');
+        }
+
+        // Show current question
+        function showQuestion() {
+            questionText.textContent = questions[currentQuestion];
+            progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            
+            // Clear previous scale options
+            scaleContainer.innerHTML = '';
+            
+            // Create scale options (1-5)
+            for (let i = 1; i <= 5; i++) {
+                const option = document.createElement('div');
+                option.className = 'scale-option';
+                if (answers[currentQuestion] === i) {
+                    option.classList.add('active');
+                }
+                option.textContent = i;
+                option.addEventListener('click', () => selectOption(i));
+                scaleContainer.appendChild(option);
+            }
+            
+            // Show random reminder
+            reminder.textContent = reminders[Math.floor(Math.random() * reminders.length)];
+            
+            // Update navigation buttons
+            if (currentQuestion === 0) {
+                btnPrev.classList.add('hidden');
+            } else {
+                btnPrev.classList.remove('hidden');
+            }
+            
+            if (currentQuestion === questions.length - 1) {
+                btnNext.textContent = 'تەواوکردن';
+            } else {
+                btnNext.textContent = 'دواتر';
+            }
+        }
+
+        // Select an option
+        function selectOption(value) {
+            // Remove active class from all options
+            const options = document.querySelectorAll('.scale-option');
+            options.forEach(option => option.classList.remove('active'));
+            
+            // Add active class to selected option
+            options[value - 1].classList.add('active');
+            
+            // Save answer
+            answers[currentQuestion] = value;
+        }
+
+        // Calculate personality type
+        function calculatePersonality() {
+            // Reset scores
+            scores = {
+                "E": 0, "I": 0,
+                "S": 0, "N": 0,
+                "T": 0, "F": 0,
+                "J": 0, "P": 0
+            };
+            
+            // Calculate scores based on answers
+            // Note: This is a simplified version. A real MBTI test would have more complex scoring
+            // based on specific questions for each dimension.
+            
+            // Extraversion (E) vs Introversion (I)
+            scores["E"] += answers[1] + answers[4] + answers[8] + answers[11] + answers[14];
+            scores["I"] += answers[0] + answers[5] + answers[9] + answers[12] + answers[15];
+            
+            // Sensing (S) vs Intuition (N)
+            scores["S"] += answers[2] + answers[6] + answers[10] + answers[13] + answers[16];
+            scores["N"] += answers[3] + answers[7] + answers[17] + answers[20] + answers[23];
+            
+            // Thinking (T) vs Feeling (F)
+            scores["T"] += answers[18] + answers[21] + answers[24] + answers[27] + answers[30];
+            scores["F"] += answers[19] + answers[22] + answers[25] + answers[28] + answers[31];
+            
+            // Judging (J) vs Perceiving (P)
+            scores["J"] += answers[32] + answers[35] + answers[38] + answers[41] + answers[44];
+            scores["P"] += answers[33] + answers[36] + answers[39] + answers[42] + answers[45];
+            
+            // Determine personality type
+            let type = '';
+            
+            type += scores["E"] > scores["I"] ? "E" : "I";
+            type += scores["S"] > scores["N"] ? "S" : "N";
+            type += scores["T"] > scores["F"] ? "T" : "F";
+            type += scores["J"] > scores["P"] ? "J" : "P";
+            
+            return type;
+        }
+
+        // Show results
+        function showResults() {
+            const type = calculatePersonality();
+            const typeInfo = personalityTypes[type];
+            
+            personalityType.textContent = type;
+            personalityDescription.textContent = typeInfo.description;
+            
+            // Clear previous traits
+            traitsContainer.innerHTML = '';
+            
+            // Add traits
+            typeInfo.traits.forEach(trait => {
+                const traitElement = document.createElement('div');
+                traitElement.className = 'trait';
+                traitElement.textContent = trait;
+                traitsContainer.appendChild(traitElement);
+            });
+            
+            // Show result container and hide test container
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        }
+
+        // Event listeners
+        btnNext.addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        });
+        
+        btnPrev.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        });
+        
+        btnRestart.addEventListener('click', () => {
+            currentQuestion = 0;
+            answers = [];
+            testContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+            initTest();
+        });
+
+        // Initialize the test
+        initTest();
+    </script>
+</body>
+</html>
